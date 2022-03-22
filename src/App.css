@@ -1,0 +1,29 @@
+.card.low {
+    border-color: green;
+}
+
+.card.normal {
+    border-color: #272727;
+}
+
+.card.high {
+    border-color: #ffc107;
+}
+
+
+.label-priority {
+    font-weight: bold;
+    text-transform: capitalize; 
+}
+
+.card.low .label-priority {
+    color: green;
+}
+
+.card.normal .label-priority {
+    color: #272727;
+}
+
+.card.high .label-priority {
+    color: #ffc107;
+}
