@@ -1,5 +1,7 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ActivityForm from "./components/ActivityForm";
+import ActivityList from "./components/ActivityList";
 
 let initialStateActivity = [
   {
@@ -17,135 +19,63 @@ let initialStateActivity = [
 ];
 
 function App() {
-  const [activities, setActivity] = useState(initialStateActivity);
+  const [index, setIndex] = useState(0);
+  const [activities, setActivities] = useState(initialStateActivity);
+  const [activity, setActivity] = useState({id: 0});
 
-  function addActivity(e) {
-    e.preventDefault();
+  useEffect(() => {
+    activities.length <= 0
+      ? setIndex(1)
+      : setIndex(
+          Math.max.apply(
+            Math,
+            activities.map((el) => el.id)
+          ) + 1
+        );
+  }, [activities]);
 
-    const activityItem = {
-      id: parseInt(document.getElementById("id").value),
-      description: document.getElementById("description").value,
-      title: document.getElementById("title").value,
-      priority: document.getElementById("priority").value,
-    };
-
-    setActivity([...activities, { ...activityItem }]);
+  function addActivity(acty) {
+    setActivities([...activities, { ...acty, id: index }]);
   }
 
-  function priorityLabel(param) {
-    const Priority = {
-      1: "low",
-      2: "normal",
-      3: "high",
-    };
-
-    return Priority[param] || " - ";
+  function updateActivity(acty) {
+    setActivities(
+      activities.map((item) => (item.id === acty.id ? acty : item))
+    );
+    setActivity({ id: 0 });
   }
 
-  function priorityLabelIcon(param) {
-    const Priority = {
-      1: "smile",
-      2: "meh",
-      3: "frown",
-    };
+  function cancelActivity() {
+    setActivity({ id: 0 });
+  }
 
-    return Priority[param] || " - ";
+  function deleteActivity(id) {
+    const newActivities = activities.filter((e) => e.id !== id);
+    setActivities([...newActivities]);
+  }
+
+  function getActivity(id) {
+    const activityItem = activities.filter((e) => e.id === id);
+    setActivity(activityItem[0]);
   }
 
   return (
     <>
-      <form className="row g-3">
-        <div className="col-md-6">
-          <label htmlFor="id" className="form-label">
-            Id
-          </label>
-          <input
-            id="id"
-            type="number"
-            className="form-control"
-            placeholder="Id"
-            value={activities.length + 1}
-            disabled
-          />
-        </div>
-        <div className="col-md-6">
-          <label className="form-label">Priority</label>
-          <select id="priority" className="form-select">
-            <option defaultValue="0">Choose...</option>
-            <option value="1">Low</option>
-            <option value="2">Normal</option>
-            <option value="3">High</option>
-          </select>
-        </div>
-        <div className="col-md-6">
-          <label htmlFor="title" className="form-label">
-            Title
-          </label>
-          <input
-            id="title"
-            type="text"
-            className="form-control"
-            placeholder="Title"
-          />
-        </div>
-        <div className="col-md-6">
-          <label htmlFor="description" className="form-label">
-            Description
-          </label>
-          <input
-            id="description"
-            type="text"
-            className="form-control"
-            placeholder="Description"
-          />
-        </div>
-        <button
-          className="btn btn-outline-secondary"
-          type="submit"
-          onClick={addActivity}
-        >
-          Add Activity
-        </button>
-      </form>
+      <ActivityForm
+        addActivity={addActivity}
+        updateActivity={updateActivity}
+        activities={activities}
+        selectedActivity={activity}
+      />
       <hr />
       <div className="mt-3 mt-4">
-        {activities.map((el) => (
-          <div
-            key={el.id}
-            className={"card mb-2 " + priorityLabel(el.priority)}
-          >
-            <div className="card-body">
-              <div className="d-flex justify-content-between">
-                <h5 className="card-title">
-                  {el.id} - {el.title}
-                </h5>
-                <h6>
-                  Priority:
-                  <i
-                    className={
-                      "ms-1 me-1 fa-regular label-priority fa-face-" +
-                      priorityLabelIcon(el.priority)
-                    }
-                  ></i>
-                  <span className="label-priority">
-                    {priorityLabel(el.priority)}
-                  </span>
-                </h6>
-              </div>
-              <p className="card-text">{el.description}</p>
-              <div className="d-flex justify-content-end">
-                <button className="btn btn-outline-primary me-2">
-                  <i className="fas fa-pen me-2"> </i>
-                  Edit
-                </button>
-                <button className="btn btn-outline-danger">
-                  <i className="fas fa-trash me-2"> </i>
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+        <ActivityList
+          activities={activities}
+          deleteActivity={deleteActivity}
+          cancelActivity={cancelActivity}
+          addActivity={addActivity}
+          getActivity={getActivity}
+        />
       </div>
     </>
   );
