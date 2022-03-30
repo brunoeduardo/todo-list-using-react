@@ -1,22 +1,12 @@
 
 export default function Activity(props) {
-  function priorityLabel(param) {
-    const Priority = {
-      1: "low",
-      2: "normal",
-      3: "high",
-    };
-
-    return Priority[parseInt(param)] || " - ";
-  }
-
   function priorityLabelIcon(param, icon = true) {
-    switch (parseInt(param)) {
-      case 1:
+    switch (param.toLowerCase()) {
+      case 'low':
         return icon ? "smile" : "success";
-      case 2:
+      case 'normal':
         return icon ? "meh" : "dark";
-      case 3:
+      case 'high':
         return icon ? "frown" : "warning";
       default:
         return " - ";
@@ -49,7 +39,7 @@ export default function Activity(props) {
                   priorityLabelIcon(props.el.priority)
                 }
               ></i>
-              {priorityLabel(props.el.priority)}
+              {props.el.priority.toLowerCase()}
             </span>
           </h6>
         </div>
@@ -64,7 +54,7 @@ export default function Activity(props) {
           </button>
           <button
             className="btn btn-outline-danger"
-            onClick={() => props.deleteActivity(props.el.id)}
+            onClick={() => props.handleDeleteModal(props.el.id)}
           >
             <i className="fas fa-trash me-2"> </i>
             Delete

@@ -4,7 +4,7 @@ export default function ActivityList(props) {
   return (
     <>
       {props.activities.map((el) => (
-        <Activity key={el.id} el={el} deleteActivity={props.deleteActivity} getActivity={props.getActivity} />
+        <Activity key={el.id} el={el} handleDeleteModal={props.handleDeleteModal} getActivity={props.getActivity} />
       ))}
     </>
   );
