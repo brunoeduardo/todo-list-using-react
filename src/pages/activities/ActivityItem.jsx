@@ -1,12 +1,11 @@
-
-export default function Activity(props) {
+export default function ActivityItem(props) {
   function priorityLabelIcon(param, icon = true) {
     switch (param.toLowerCase()) {
-      case 'low':
+      case "low":
         return icon ? "smile" : "success";
-      case 'normal':
+      case "normal":
         return icon ? "meh" : "dark";
-      case 'high':
+      case "high":
         return icon ? "frown" : "warning";
       default:
         return " - ";
