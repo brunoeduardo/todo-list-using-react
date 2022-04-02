@@ -3,26 +3,27 @@ import { Button, FormControl, InputGroup } from "react-bootstrap";
 import TitlePage from "../../components/TitlePage";
 import { useNavigate } from "react-router-dom";
 
-const clientList = [
-  {
-    id: 1,
-    name: "Customer name",
-    responsible: "Responsible Name",
-    contact: "Teste Contact",
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Amazon",
-    responsible: "Steve",
-    contact: "19999888777",
-    status: "Active",
-  },
-];
+//   {
+//     id: 1,
+//     name: "Customer name",
+//     responsible: "Responsible Name",
+//     contact: "Teste Contact",
+//     status: "Active",
+//   },
+//   {
+//     id: 2,
+//     name: "Amazon",
+//     responsible: "Steve",
+//     contact: "19999888777",
+//     status: "Active",
+//   },
+// ];
 
 export default function ClientList() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const getClientStorage = localStorage.getItem("clientStorage");
+  const clientList = [...JSON.parse(getClientStorage)];
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
@@ -68,7 +69,7 @@ export default function ClientList() {
               <td>{client.id}</td>
               <td>{client.name}</td>
               <td>{client.responsible}</td>
-              <td>{client.contact}</td>
+              <td>{client.contactNumber}</td>
               <td>{client.status}</td>
               <td>
                 <div>
