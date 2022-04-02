@@ -82,10 +82,6 @@ export default function ClientList() {
                     <i className="fas fa-user-edit me-2"></i>
                     Edit
                   </button>
-                  <button className="btn btn-sm btn-outline-danger me-2">
-                    <i className="fas fa-user-times me-2"></i>
-                    Disable
-                  </button>
                 </div>
               </td>
             </tr>

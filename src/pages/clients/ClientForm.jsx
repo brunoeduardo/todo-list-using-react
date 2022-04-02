@@ -15,15 +15,23 @@ export default function ClientForm() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [client, setClient] = useState(currentActivity());
+  const [client, setClient] = useState(currentClient());
 
   function inputTextHandler(e) {
     const { name, value } = e.target;
     setClient({ ...client, [name]: value });
   }
 
-  function currentActivity() {
-    return initialClient;
+  function currentClient() {
+    if (id) {
+      const getClientStorage = localStorage.getItem("clientStorage");
+      const getClientList = JSON.parse(getClientStorage);
+      if (getClientList && getClientList.length) {
+        return getClientList.filter((e) => e.id === parseInt(id))[0];
+      }
+    } else {
+      return initialClient;
+    }
   }
 
   function handleSubmit(e) {
@@ -33,8 +41,21 @@ export default function ClientForm() {
     let getClientList = JSON.parse(getClientStorage)
       ? JSON.parse(getClientStorage)
       : [];
-    client.id = getClientList.length + 1;
-    getClientList.push(client);
+
+    if (id) {
+      getClientList = getClientList.map((e) => {
+        if (e.id === parseInt(id)) {
+          e.name = client.name;
+          e.responsible = client.responsible;
+          e.contactNumber = client.contactNumber;
+          e.status = client.status;
+        }
+        return e;
+      });
+    } else {
+      client.id = getClientList.length + 1;
+      getClientList.push(client);
+    }
     localStorage.setItem("clientStorage", JSON.stringify(getClientList));
     navigate(`/client/list/`);
   }
@@ -96,7 +117,7 @@ export default function ClientForm() {
             id="status"
             className="form-select"
             onChange={inputTextHandler}
-            value={client.priority}
+            value={client.status}
           >
             <option defaultValue="Undefined">Choose...</option>
             <option value="active">Active</option>
