@@ -3,22 +3,6 @@ import { Button, FormControl, InputGroup } from "react-bootstrap";
 import TitlePage from "../../components/TitlePage";
 import { useNavigate } from "react-router-dom";
 
-//   {
-//     id: 1,
-//     name: "Customer name",
-//     responsible: "Responsible Name",
-//     contact: "Teste Contact",
-//     status: "Active",
-//   },
-//   {
-//     id: 2,
-//     name: "Amazon",
-//     responsible: "Steve",
-//     contact: "19999888777",
-//     status: "Active",
-//   },
-// ];
-
 export default function ClientList() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
